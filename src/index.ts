@@ -4,6 +4,7 @@ import * as fs from "fs";
 
 //roomInfo接口
 interface roomInfo {
+
     title: string,//房间标题
     url: string,//房间链接
     roomId:string,//房间号

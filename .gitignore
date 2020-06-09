@@ -7,5 +7,7 @@ dist/
 .ftppass
 .idea
 .idea/
+*.js
+*.js.map
 *.idea/
 logs/

@@ -37,6 +37,7 @@ http.createServer(function (request, response) {
 </head>
 <body>`;
 
+
     html += `<table border='1'><tr>
     <th>标题</th>
     <th>主播</th>

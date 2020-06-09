@@ -51,6 +51,7 @@ const netPromise = new Promise((resolve, reject) => {
                 streamerName:""//视频流名称
             };
             if(!error && response.statusCode == 200 &&(typeof body) === "string"){
+
                 const regRes: any = /"stream": ({.+?})\s*}/.exec(body);
                 if (regRes && JSON.parse("{" + regRes[0])["stream"]["status"] == 200) {
                     const infoObj = JSON.parse("{" + regRes[0])["stream"];
