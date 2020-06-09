@@ -1,0 +1,18 @@
+{
+  "personInfo": {
+    "username": "ni00",
+    "password": "xxxxxxxx",
+    "mail": {
+      "user": "xxx@xxxxx.com",
+      "password":"xxxxxxxx",
+      "port": "445",
+      "SSL": true,
+      "host": "172.0.0.1"
+    }
+  },
+  "scriptOptions":{
+    "onlyNumberRoomId":true,
+    "sendMailToUser": false,
+    "coveringMode": false
+  }
+}

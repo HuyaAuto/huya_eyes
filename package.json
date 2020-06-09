@@ -1,0 +1,16 @@
+{
+  "name": "huya_eyes",
+  "version": "1.0.0",
+  "description": "虎牙之眼，监控虎牙直播",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "倪小白",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "request": "^2.88.2"
+  }
+}
