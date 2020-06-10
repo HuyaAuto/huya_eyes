@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .vscode/
+*.*.map
 *.mp4
 *.flv
 *.MP4
@@ -8,6 +9,5 @@ dist/
 .idea
 .idea/
 *.js
-*.js.map
 *.idea/
 logs/
