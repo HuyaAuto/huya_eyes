@@ -88,7 +88,7 @@ const netPromise = new Promise((resolve, reject) => {
             }
             roomsLiveInfo.push(oneLive);
             console.log(roomsLiveInfo.length + "/" + roomsInfo.length);
-            if (roomsLiveInfo.length == roomsInfo.length){
+            if (roomsLiveInfo.length == roomsInfo.length ){
                 resolve(roomsLiveInfo)
             }
         });
