@@ -2,13 +2,14 @@
 > 监控虎牙直播状况，并且调用 StreamerHelper 进行视频流录制
 
 ## 源码文件
-+ index.ts
++ spider.ts
 > 爬取虎牙分区房间基本信息roomInfo.json文件
-+ huya_eyes.ts
++ eyes.ts
 > 查询roomInfo.json文件中记录的房间的状态，生成live.json
 + panel.ts
 > 展示相关live.json中的信息
 
+> 先执行spider.ts 再执行 eyes.ts 再执行 panel.ts
 ## DONE
 1. 爬虫抓取虎牙分区（默认120个房间），生成房间信息json
 2. 定时监控房间的直播是否打开
