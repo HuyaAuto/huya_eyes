@@ -3,6 +3,11 @@ import * as fs from "fs";
 
 //roomInfo接口
 //TODO:如何把接口放在公共文件中？模块？
+function base64ToString(base64Str){
+    var str = Buffer.from(base64Str,'base64').toString();
+    return str;
+}
+
 interface roomInfo {
     title: string,//房间标题
     url: string,//房间链接
@@ -57,10 +62,25 @@ const netPromise = new Promise((resolve, reject) => {
                 streamerName: ""//视频流名称
             };
             if (!error && response.statusCode == 200 && (typeof body) === "string") {
+                const regRes1: any = body.split("hyPlayerConfig =")[1].split("};")[0] + "}";
 
-                const regRes: any = /"stream": ({.+?})\s*}/.exec(body);
-                if (regRes && JSON.parse("{" + regRes[0])["stream"]["status"] == 200) {
-                    const infoObj = JSON.parse("{" + regRes[0])["stream"];
+                if (regRes1 && JSON.parse(regRes1)["stream"]) {
+                    let infoObj = JSON.parse(base64ToString(JSON.parse(regRes1)["stream"]));
+
+                    let streamInfoList = infoObj.data[0].gameStreamInfoList;
+
+                    let urlInfo1 = streamInfoList[0];
+                    let urlInfo2 = streamInfoList[1];
+                    //console.log("阿里的CDN");
+                    let aliFLV = urlInfo1["sFlvUrl"] + "/" + urlInfo1["sStreamName"] + ".flv?" + urlInfo1["sFlvAntiCode"];
+                    let aliHLS = urlInfo1["sHlsUrl"] + "/" + urlInfo1["sStreamName"] + ".m3u8?" + urlInfo1["sHlsAntiCode"];
+                    let aliP2P = urlInfo1["sP2pUrl"] + "/" + urlInfo1["sStreamName"] + ".slice?" + urlInfo1["newCFlvAntiCode"];
+
+                    //console.log("腾讯的CDN");
+                    let txFLV = urlInfo2["sFlvUrl"] + "/" + urlInfo2["sStreamName"] + ".flv?" + urlInfo2["sFlvAntiCode"];
+                    let txHLS = urlInfo2["sHlsUrl"] + "/" + urlInfo2["sStreamName"] + ".m3u8?" + urlInfo2["sHlsAntiCode"];
+                    let txP2P = urlInfo2["sP2pUrl"] + "/" + urlInfo2["sStreamName"] + ".slice?" + urlInfo2["newCFlvAntiCode"];
+
                     oneLive.live = true;
                     //下面是copy的getHuyaStreamUrl.ts
                     const room_info = infoObj["data"][0]["gameLiveInfo"];
@@ -69,26 +89,8 @@ const netPromise = new Promise((resolve, reject) => {
                     //视频流名称
                     const streamerName = room_info["nick"];
                     oneLive.streamerName = streamerName;
-                    const len = infoObj["data"][0]["gameStreamInfoList"].length;
-                    let streamArr = [];
-                    for (let i = 0; i < len; i++) {
-                        const stream_info = infoObj["data"][0]["gameStreamInfoList"][i];
-                        // console.log(stream_info);
-                        const sHlsUrl = stream_info["sHlsUrl"];
-                        // console.log('sHlsUrl',sHlsUrl);
-                        const sStreamName = stream_info["sStreamName"];
-                        const sHlsUrlSuffix = stream_info["sHlsUrlSuffix"];
-                        const sHlsAntiCode = stream_info["sHlsAntiCode"];
-                        const resStream = `${sHlsUrl}/${sStreamName}.${sHlsUrlSuffix}?${sHlsAntiCode}`;
-
-                        streamArr.push(resStream);
-                    }
-                    const tsStream: any = streamArr.filter((v: string) => {
-                        // console.log(v.substr(7,2));
-                        return v.substr(7, 2) === "tx";
-                    });
                     //视频流链接
-                    oneLive.streamUrl = tsStream[0];
+                    oneLive.streamUrl = txHLS;
                 }
                 console.log(`第${index}项已完成`);
             }
@@ -112,6 +114,7 @@ netPromise.then(data => {
                 return console.error(err);
             }
             console.log("数据文件写入成功！");
+            process.exit();
         });
     }
     , err => console.log(err))

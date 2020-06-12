@@ -23,7 +23,7 @@ function getRoomId(url:string):string {
 }
 
 //分区ID
-let zoneId:number = 100004;
+let zoneId:any = "lol";
 let url:string = `https://www.huya.com/g/${zoneId}`;
 //roomInfo集合
 let rooms:roomInfo[]=[];
