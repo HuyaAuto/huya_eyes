@@ -2,7 +2,6 @@ import * as request from "request";
 import * as fs from "fs";
 
 //roomInfo接口
-//TODO:如何把接口放在公共文件中？模块？
 function base64ToString(base64Str){
     var str = Buffer.from(base64Str,'base64').toString();
     return str;
@@ -33,8 +32,6 @@ const infoFileName: string = "../info/roomInfo_lol.json";//房间信息的json�
 let roomsInfo: roomInfo[] = JSON.parse(fs.readFileSync(infoFileName).toString());
 
 let roomsLiveInfo: roomLiveInfo[] = [];
-
-//TODO:请求是异步的，但是貌似请求太多会阻塞，原因不明？封IP
 
 const netPromise = new Promise((resolve, reject) => {
     //5秒跳出
@@ -96,7 +93,6 @@ const netPromise = new Promise((resolve, reject) => {
 
 });
 
-//TODO:理论可行了，但是总是会丢失info，无法正常resolve
 netPromise.then(data => {
         console.log(`直播房状态抓取完毕`);
         console.log("准备写入 /info/live.json 文件");
