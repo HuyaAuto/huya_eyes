@@ -29,7 +29,7 @@ interface roomLiveInfo extends roomInfo {
     streamerName: string//视频流名称
 }
 
-const infoFileName: string = "../info/roomInfo_100004.json";//房间信息的json文件地址
+const infoFileName: string = "../info/roomInfo_lol.json";//房间信息的json文件地址
 let roomsInfo: roomInfo[] = JSON.parse(fs.readFileSync(infoFileName).toString());
 
 let roomsLiveInfo: roomLiveInfo[] = [];
@@ -45,16 +45,7 @@ const netPromise = new Promise((resolve, reject) => {
     roomsInfo.forEach((value, index) => {
         request(value.url, function (error, response, body) {
             let oneLive: roomLiveInfo = {
-                title: value.title,//房间标题
-                url: value.url,//房间链接
-                roomId: value.roomId,//房间号
-                nickname: value.nickname,//主播昵称
-                avatar: value.avatar,//主播头像
-                type: value.type,//直播类型
-                quality: value.quality,//视频最高画质
-                num: value.num,//观众人数
-                level: value.level,//重要等级：默认为0；等级1以上将发送监控邮件（目前默认全局发送）；等级2将直接记录直播流。
-                remark: value.remark,
+                ...value,
                 live: false, //是否正在直播
                 statusCode: response.statusCode || 403,//http响应码
                 sex: null,//主播性别 1为男 2为女 null未知
@@ -66,6 +57,7 @@ const netPromise = new Promise((resolve, reject) => {
 
                 if (regRes1 && JSON.parse(regRes1)["stream"]) {
                     let infoObj = JSON.parse(base64ToString(JSON.parse(regRes1)["stream"]));
+
 
                     let streamInfoList = infoObj.data[0].gameStreamInfoList;
 
@@ -90,7 +82,7 @@ const netPromise = new Promise((resolve, reject) => {
                     const streamerName = room_info["nick"];
                     oneLive.streamerName = streamerName;
                     //视频流链接
-                    oneLive.streamUrl = txHLS;
+                    oneLive.streamUrl = txHLS.replace("amp;","");
                 }
                 console.log(`第${index}项已完成`);
             }
